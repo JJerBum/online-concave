@@ -1,47 +1,55 @@
 package main
 
-import "fmt"
-
-const (
-	// 가로
-	BoardLength int = 15
-
-	// 세로
-	BoardWidth int = 15
-
-	// 흑 돌 외의 출력할 점
-	BoardPoint = "·"
+import (
+	"fmt"
+	"online-concave/board"
 )
 
-type board [BoardWidth][BoardLength]string
-
-func (b *board) init(defaultPoint string) {
-	for i := 0; i < BoardWidth; i++ {
-		for j := 0; j < BoardWidth; j++ {
-			b[i][j] = BoardPoint
-		}
-	}
-}
-
-func (b *board) show() {
-	fmt.Println("   A B C D E F G H I J K L M N O")
-	fmt.Println("   ------------------------------")
-	for i := 0; i < BoardWidth; i++ {
-		// 세로 좌표를 출력할 때, 일정한 폭을 맞추어 출력합니다.
-		fmt.Printf("%2d|", i+1)
-		for j := 0; j < BoardLength; j++ {
-			fmt.Printf("%s ", b[i][j]) // 각 교점의 돌 또는 점 출력
-		}
-		// 세로 좌표를 출력할 때, 일정한 폭을 맞추어 출력합니다.
-		fmt.Printf("|%2d\n", i+1)
-	}
-	fmt.Println("   ------------------------------")
-	fmt.Println("   A B C D E F G H I J K L M N O")
-}
+// TODO: test 코드 작성
 
 func main() {
-	var board board
-	board.init(BoardPoint)
-	board.show()
+	// 보드 판 출력
+	myBoard := board.New()
+	myBoard.Initialize()
+	isWhiteTurn := true
+
+	var inputRune rune
+	var inputNum int
+
+	for {
+		myBoard.Render()
+
+		if _, err := fmt.Scanf("%c %d", &inputRune, &inputNum); err != nil {
+			fmt.Println("Retry Enter, ", err)
+			continue
+		}
+
+		if isWhiteTurn {
+			if err := myBoard.PutPiece(inputNum, 'a'-int(inputRune), board.White); err != nil {
+				fmt.Println(err)
+				continue
+			}
+
+		} else {
+			if err := myBoard.PutPiece(inputNum, 'a'-int(inputRune), board.Black); err != nil {
+				fmt.Println(err)
+				continue
+			}
+		}
+
+		if winner := myBoard.FindWinner(); winner != board.None {
+			switch winner {
+			case board.White:
+				fmt.Println("Winner is White Player!")
+			case board.Black:
+				fmt.Println("Winner is Black Player!")
+			}
+			break
+		}
+
+		isWhiteTurn = !isWhiteTurn
+	}
+
+	myBoard.Render()
 
 }
