@@ -94,6 +94,7 @@ func (b *Board) FindWinner() PieceType {
 	return None
 }
 
+// TODO: row, col 보다는 point라는 구조체를 묵어서  매개변수로 선언하자. 호출 시 깔끔하게 사용할 수 있게 변경 해라!
 func (b *Board) PutPiece(row, col int, piece PieceType) error {
 	if b[row][col] != None {
 		return isNotValidError
@@ -109,6 +110,7 @@ func (b *Board) isWin(row, col int) bool {
 	currentPiece := b[row][col]
 
 	horizontal := func() bool {
+
 		startRow := row - 2
 		endRow := row + 2
 
@@ -127,6 +129,7 @@ func (b *Board) isWin(row, col int) bool {
 			}
 		}
 
+		fmt.Println("horizontal true")
 		return true
 	}
 
@@ -149,6 +152,7 @@ func (b *Board) isWin(row, col int) bool {
 			}
 		}
 
+		fmt.Println("vertical true")
 		return true
 	}
 
@@ -176,6 +180,7 @@ func (b *Board) isWin(row, col int) bool {
 			startCol++
 		}
 
+		fmt.Println("upperLeftDiagonal true")
 		return true
 	}
 
@@ -203,6 +208,7 @@ func (b *Board) isWin(row, col int) bool {
 			startCol--
 		}
 
+		fmt.Println("upperRightDiagonal true")
 		return true
 	}
 

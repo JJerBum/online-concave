@@ -25,13 +25,13 @@ func main() {
 		}
 
 		if isWhiteTurn {
-			if err := myBoard.PutPiece(inputNum, 'a'-int(inputRune), board.White); err != nil {
+			if err := myBoard.PutPiece(inputNum, int(inputRune)-'a', board.White); err != nil {
 				fmt.Println(err)
 				continue
 			}
 
 		} else {
-			if err := myBoard.PutPiece(inputNum, 'a'-int(inputRune), board.Black); err != nil {
+			if err := myBoard.PutPiece(inputNum, int(inputRune)-'a', board.Black); err != nil {
 				fmt.Println(err)
 				continue
 			}
